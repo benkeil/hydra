@@ -1,0 +1,22 @@
+image: my.private.registry:5000/docker-common/php-base
+versions:
+- directory: php5.6/alpine
+  args:
+  dockerfile: Dockerfile.alpine
+  tags: 
+  - semver-php5.6-alpine
+  - php5.6-alpine
+  - php5.6
+  - latest
+- directory: php5.6/debian
+  tags: 
+  - semver-php5.6-debian  
+  - php5.6-debian
+- directory: php7.1/debian
+- directory: php7.1/alpine
+  tags: 
+  - semver-php7.1-alpine
+  - semver-alpine
+  - php7.1-alpine
+  - php7.1
+  - alpine

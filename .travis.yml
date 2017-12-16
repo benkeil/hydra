@@ -1,0 +1,52 @@
+language: go
+
+go:
+- 1.9
+
+env:
+- BUILD_GOOS=darwin BUILD_GOARCH=amd64
+- BUILD_GOOS=linux BUILD_GOARCH=386
+- BUILD_GOOS=linux BUILD_GOARCH=amd64
+
+before_script:
+- PROJECT_NAME=$(echo ${TRAVIS_REPO_SLUG} | cut -d "/" -f 2)
+- go get -u github.com/golang/dep/cmd/dep
+- |
+  OUTPUT_NAME=${PROJECT_NAME}-${BUILD_GOOS}-${BUILD_GOARCH}
+  if [ ${BUILD_GOOS} = "windows" ]; then
+    OUTPUT_NAME+='.exe'
+  fi
+
+script:
+- dep ensure
+- dep status
+- echo "Building ${OUTPUT_NAME}"
+- go test -race -covermode=atomic ./...
+- env GOOS=${BUILD_GOOS} GOARCH=${BUILD_GOARCH} go build -o ${OUTPUT_NAME} cmd/*.go
+- tar -cvzf ${OUTPUT_NAME}.tar.gz ${OUTPUT_NAME}
+
+after_success:
+- bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
+
+before_deploy:
+- mkdir -p build/${TRAVIS_TAG} && shasum -a 256 ${OUTPUT_NAME}.tar.gz | awk '{print $1}' > build/${TRAVIS_TAG}/${OUTPUT_NAME}.tar.gz.sha265
+- echo sha sum $(cat build/${TRAVIS_TAG}/${OUTPUT_NAME}.tar.gz.sha265)
+
+deploy:
+- provider: releases
+  api_key: ${GITHUB_API_KEY}
+  #prerelease: true
+  file: 
+  - ${OUTPUT_NAME}.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+- provider: s3
+  region: "eu-central-1"
+  bucket: "benkeil-hydra"
+  access_key_id: ${AWS_ACCESS_KEY}
+  secret_access_key: ${AWS_ACCESS_SECRET}
+  local_dir: build
+  skip_cleanup: true
+  on:
+    tags: true
