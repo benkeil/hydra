@@ -45,7 +45,7 @@ func newRootCmd(args []string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:          "hydra",
 		Short:        "Hydra builds docker images and add multiple convenient tags",
-		Version:      "1.0.0",
+		Version:      "0.0.1",
 		SilenceUsage: true,
 	}
 
