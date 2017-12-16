@@ -98,8 +98,14 @@ The string `semver` is a special tag that generates three convenient tags. It ca
 
 ## Commands
 
+### Build
+
+Can be used to build and tag your images.
+
+    hydra build VERSION [-w WORKDIR]
+
 ### Push
 
 Can be used to push all images to the registry.
 
-    hydra push VERSION -w WORKDIR
+    hydra push VERSION [-w WORKDIR]
