@@ -76,6 +76,20 @@ Successfully tagged my.private.registry:5000/docker-common/php-base:php7.1
 Successfully tagged my.private.registry:5000/docker-common/php-base:alpine
 ```
 
+## How to install
+
+Hydra has an installer script that will automatically grab the latest version of the Hydra client and install it locally.
+
+You can fetch that script, and then execute it locally. It’s well documented so that you can read through it and understand what it is doing before you run it.
+
+    curl https://raw.githubusercontent.com/benkeil/hydra/master/scripts/get > get_hydra.sh
+    chmod 700 get_hydra.sh
+    ./get_hydra.sh
+
+You can also run
+
+    curl https://raw.githubusercontent.com/benkeil/hydra/master/scripts/get | bash
+
 ## Tagging strategies
 
 ### Default

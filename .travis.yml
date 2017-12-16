@@ -3,6 +3,7 @@ language: go
 go:
 - 1.9
 
+# https://golang.org/doc/install/source#environment
 env:
 - BUILD_GOOS=darwin BUILD_GOARCH=amd64
 - BUILD_GOOS=linux BUILD_GOARCH=386
@@ -29,8 +30,8 @@ after_success:
 - bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
 
 before_deploy:
+- shasum -a 256 ${OUTPUT_NAME}.tar.gz
 - mkdir -p build/${TRAVIS_TAG} && shasum -a 256 ${OUTPUT_NAME}.tar.gz | awk '{print $1}' > build/${TRAVIS_TAG}/${OUTPUT_NAME}.tar.gz.sha265
-- echo sha sum $(cat build/${TRAVIS_TAG}/${OUTPUT_NAME}.tar.gz.sha265)
 
 deploy:
 - provider: releases
