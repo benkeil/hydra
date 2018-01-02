@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -22,7 +24,8 @@ type pushCmd struct {
 
 // PushResponse contains the response from the docker client for "docker build"
 type PushResponse struct {
-	Stream string
+	Status string
+	ID     string
 }
 
 func newPushCmd(out io.Writer, workdir string) *cobra.Command {
@@ -68,14 +71,27 @@ func (c *pushCmd) run() error {
 		// Build image
 		logger.Debugf("response from docker daemon:")
 		for _, image := range c.imageHelper.getImageTags(config, tags) {
-			pushResponse, err := cli.ImagePush(context.Background(), image, types.ImagePushOptions{})
+			fmt.Printf("push %s\n", image)
+			pushResponse, err := cli.ImagePush(context.Background(), image, types.ImagePushOptions{
+				RegistryAuth: "hydra",
+			})
 			if err != nil {
-				fmt.Printf("Can push image %s\n%s\n", image, err.Error())
+				fmt.Printf("Can not push image %s\n%s\n", image, err.Error())
 			} else {
 				defer pushResponse.Close()
 				response, err := ioutil.ReadAll(pushResponse)
 				check(err)
-				fmt.Printf("%s\n", response)
+				// Print response from docker daemon
+				logger.Debugf("response from docker daemon:")
+				for _, line := range strings.Split(string(response), "\n") {
+					output := PushResponse{}
+					json.Unmarshal([]byte(line), &output)
+					if output.Status != "" && output.ID != "" {
+						fmt.Printf("%s: %s\n", output.ID, output.Status)
+					} else if output.Status != "" {
+						fmt.Printf("%s\n", output.Status)
+					}
+				}
 			}
 		}
 	}

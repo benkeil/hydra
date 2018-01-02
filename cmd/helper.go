@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// ImageHelper
+// ImageHelper provides some helper methods
 type ImageHelper interface {
 	getImageTags(config Config, tags []string) []string
 }

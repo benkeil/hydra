@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -17,12 +16,10 @@ versions:
     - latest`
 
 func TestGetConfig(t *testing.T) {
-	fmt.Println("start test")
 
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	mockConfig := NewMockConfigReader(mockCtrl)
-	mockConfig.EXPECT().readConfig("some/path").Return([]byte(response), nil).Times(1)
-	mockConfig.readConfig("some/path")
+	//mockConfig := NewMockConfigReader(mockCtrl)
+	//mockConfig.EXPECT().readConfig("some/path").Return([]byte(response), nil).Times(1)
 }

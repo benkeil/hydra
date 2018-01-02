@@ -1,12 +1,12 @@
 package main
 
-//go:generate mockgen -source=config.go -destination=mock_config.go -package=main
+//go:generate mockgen -source=config.go -destination=config_mock.go -package=main
 
 import (
 	"io/ioutil"
 	"path"
 
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 const hydraFile = "hydra.yaml"

@@ -6,5 +6,5 @@ versions:
   args:
   dockerfile:
   tags:
-    - semver
-    - latest
+  - semver
+  - latest

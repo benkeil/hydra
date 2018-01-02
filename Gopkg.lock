@@ -77,13 +77,13 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context","context/ctxhttp","proxy"]
-  revision = "dc871a5d77e227f5bbf6545176ef3eeebf87e76e"
+  revision = "d866cfc389cec985d6fda2859936a575a55a3ab6"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["windows"]
-  revision = "b8f5ef32195cae6470b728e8ca677f0dbed1a004"
+  revision = "d5840adf789d732bc8b00f37b26ca956a7cc8e79"
 
 [[projects]]
   branch = "v2"
