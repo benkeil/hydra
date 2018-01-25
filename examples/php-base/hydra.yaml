@@ -1,4 +1,5 @@
-image: my.private.registry:5000/docker-common/php-base
+image: 
+- my.private.registry:5000/docker-common/php-base
 versions:
 - directory: php5.6/alpine
   args:

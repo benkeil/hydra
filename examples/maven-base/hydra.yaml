@@ -1,0 +1,18 @@
+image: 
+- my.private.registry:5000/docker-common/maven-base
+versions:
+- directory: java-7
+  args:
+  dockerfile:
+  tags: 
+  - semver-java-7
+  - java-7
+- directory: java-8
+  tags: 
+  - semver-java-8
+  - java-8
+  - latest
+- directory: java-9
+  tags: 
+  - semver-java-9
+  - java-9
