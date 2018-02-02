@@ -79,7 +79,7 @@ func (c *buildCmd) run() error {
 		}
 
 		// Tar the working directory to send to the docker API
-		tarfileName, err := TarWorkdir(directory)
+		tarfileName, err := TarWorkdir(c.workdir)
 		check(err)
 		tarfile, err := os.Open(tarfileName)
 		check(err)
