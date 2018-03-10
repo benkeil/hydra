@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 
@@ -15,7 +14,7 @@ var logger = loggo.GetLogger("hydra")
 var version string
 
 func init() {
-	loggo.ConfigureLoggers("<root>=INFO; hydra=ERROR")
+	loggo.ConfigureLoggers(fmt.Sprintf("<root>=INFO; hydra=%s", "ERROR"))
 }
 
 func main() {
@@ -25,33 +24,25 @@ func main() {
 	}
 }
 
-func emptyRun(*cobra.Command, []string) {}
-
-func executeCommand(root *cobra.Command, args ...string) (output string, err error) {
-	_, output, err = executeCommandC(root, args...)
-	return output, err
-}
-
-func executeCommandC(root *cobra.Command, args ...string) (c *cobra.Command, output string, err error) {
-	buf := new(bytes.Buffer)
-	root.SetOutput(buf)
-	root.SetArgs(args)
-
-	c, err = root.ExecuteC()
-
-	return c, buf.String(), err
-}
-
 func newRootCmd(args []string) *cobra.Command {
 	var workdir string
+	var debug bool
 	cmd := &cobra.Command{
 		Use:          "hydra",
 		Short:        "Hydra builds docker images and add multiple convenient tags",
 		Version:      version,
 		SilenceUsage: true,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			var logLevel = "ERROR"
+			if debug {
+				logLevel = "DEBUG"
+			}
+			loggo.ConfigureLoggers(fmt.Sprintf("<root>=INFO; hydra=%s", logLevel))
+		},
 	}
 
 	cmd.PersistentFlags().StringVarP(&workdir, "workdir", "w", ".", "the root directory of the project you want to build")
+	cmd.PersistentFlags().BoolVar(&debug, "debug", false, "enable debug output")
 	cmd.PersistentFlags().Parse(args)
 
 	out := cmd.OutOrStdout()

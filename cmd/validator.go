@@ -10,7 +10,7 @@ import (
 func SemverValidator() cobra.PositionalArgs {
 	return func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
-			return errors.New("the version you want to push is required")
+			return errors.New("the version you want to build/push is required")
 		}
 		/*_, err := semver.Parse(args[0])
 		if err != nil {

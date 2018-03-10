@@ -77,6 +77,9 @@ func (parser *DefaultTagParser) parseTag(version Version, tag string) []string {
 		logger.Debugf("Using ReplaceStrategy for tag: %v", tag)
 		strategy := ReplaceStrategy{tag, parser.version}
 		parsedTags = append(parsedTags, strategy.GetTags()...)
+	} else {
+		// convenient should not be build if we dont have a semver tag
+		logger.Debugf("Using SkipStrategy for tag: %v", tag)
 	}
 	logger.Debugf("Parsed tags: %v\n", parsedTags)
 	return parsedTags

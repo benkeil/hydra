@@ -41,6 +41,11 @@ func newBuildCmd(out io.Writer, workdir string) *cobra.Command {
 			c.version = args[0]
 			return c.run()
 		},
+		PersistentPostRun: func(cmd *cobra.Command, args []string) {
+			if c.push {
+				fmt.Fprintf(c.out, "pushing images for version: %s\n", c.version)
+			}
+		},
 	}
 	cmd.Flags().BoolVarP(&c.push, "push", "", false, "also push the images (experimental)")
 
