@@ -29,7 +29,7 @@ type PushResponse struct {
 }
 
 func newPushCmd(out io.Writer, workdir string) *cobra.Command {
-	pc := &pushCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
+	c := &pushCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
 
 	cmd := &cobra.Command{
 		Use:              "push VERSION",
@@ -37,8 +37,8 @@ func newPushCmd(out io.Writer, workdir string) *cobra.Command {
 		TraverseChildren: true,
 		Args:             SemverValidator(),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			pc.version = args[0]
-			return pc.run()
+			c.version = args[0]
+			return c.run()
 		},
 	}
 

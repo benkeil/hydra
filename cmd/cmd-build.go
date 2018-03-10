@@ -30,7 +30,7 @@ type BuildResponse struct {
 }
 
 func newBuildCmd(out io.Writer, workdir string) *cobra.Command {
-	bc := &buildCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
+	c := &buildCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
 
 	cmd := &cobra.Command{
 		Use:              "build VERSION",
@@ -38,11 +38,11 @@ func newBuildCmd(out io.Writer, workdir string) *cobra.Command {
 		TraverseChildren: true,
 		Args:             SemverValidator(),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			bc.version = args[0]
-			return bc.run()
+			c.version = args[0]
+			return c.run()
 		},
 	}
-	cmd.Flags().BoolVarP(&bc.push, "push", "", false, "also push the images (experimental)")
+	cmd.Flags().BoolVarP(&c.push, "push", "", false, "also push the images (experimental)")
 
 	return cmd
 }
