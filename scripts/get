@@ -76,7 +76,10 @@ verifySupported() {
 # checkDesiredVersion checks if the desired version is available.
 checkDesiredVersion() {
   # Use the GitHub releases webpage for the project to find the desired version for this project.
-  local release_url="https://api.github.com/repos/benkeil/hydra/releases/${DESIRED_VERSION:-latest}"
+  local release_url="https://api.github.com/repos/benkeil/hydra/releases/latest"
+  if [ -n "${DESIRED_VERSION}" ]; then
+    release_url="https://api.github.com/repos/benkeil/hydra/releases/tags/${DESIRED_VERSION}"
+  fi
   if type "curl" > /dev/null; then
     TAG=$(curl -SsL $release_url | grep tag_name | cut -d '"' -f 4)
   elif type "wget" > /dev/null; then
