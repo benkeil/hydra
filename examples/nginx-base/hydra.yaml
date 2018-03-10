@@ -1,4 +1,4 @@
-image: 
+image:
 - my.private.registry:5000/docker-common/nginx-base
 versions:
 - directory: .

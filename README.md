@@ -7,7 +7,7 @@ Hydra helps you to build docker images of your applications with [semver](https:
 
 ## How it works
 
-Hydra uses a config file named `hydra.yaml` to configure your docker images of your application and generates multiple tags like the offical docker community images (for example the [golang](https://hub.docker.com/_/golang/) image).
+Hydra uses a config file named `hydra.yaml` to configure the build process of the docker images of your applications and generates multiple tags like the offical docker community images (for example the [golang](https://hub.docker.com/_/golang/) image).
 
 Here is an example `hydra.yaml` for a typical php base image in that companies use:
 
@@ -109,6 +109,48 @@ The string `semver` is a special tag that generates three convenient tags. It ca
     {MAJOR-VERSION}.{FEATURE-VERSION}.{BUGFIX-VERSION}[-{SUFFIX}]
     {MAJOR-VERSION}.{FEATURE-VERSION}[-{SUFFIX}]
     {MAJOR-VERSION}[-{SUFFIX}]
+
+### Replace
+
+If your version is not a semantic version (typical a branchname) hydra just replace the `semver` tag with the version name.
+
+```yaml
+image:
+- my.private.registry:5000/docker-common/nginx-base
+versions:
+- directory: .
+  tags:
+  - semver-nginx
+  - semver
+```
+
+Assume we are in the branch `feature/AB-123`. Typical you would build your images with `hydra build AB-123` and hydra will create the following images:
+
+- my.private.registry:5000/docker-common/nginx-base:AB-123-nginx
+- my.private.registry:5000/docker-common/nginx-base:AB-123
+
+### Skip
+
+If your version is not a semantic version (typical a branchname) hydra only creates tags if the special tag `semver` is included in the tag.
+
+```yaml
+image:
+- my.private.registry:5000/docker-common/nginx-base
+versions:
+- directory: .
+  tags:
+  - semver-nginx
+  - semver
+  - nginx
+  - latest
+```
+
+Assume we are in the branch `feature/AB-123`. Typical you would build your images with `hydra build AB-123` and hydra will create the following images:
+
+- my.private.registry:5000/docker-common/nginx-base:AB-123-nginx
+- my.private.registry:5000/docker-common/nginx-base:AB-123
+
+The tags `nginx` and `latest` are skipped.
 
 ## Commands
 
