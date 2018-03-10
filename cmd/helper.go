@@ -18,6 +18,7 @@ func NewDefaultImageHelper() *DefaultImageHelper {
 	return new(DefaultImageHelper)
 }
 
+// getImageTags returns the complete image name (including registry url, image name and tag)
 func (helper *DefaultImageHelper) getImageTags(config Config, tags []string) []string {
 	// Define all images we want to build
 	imageTags := []string{}
