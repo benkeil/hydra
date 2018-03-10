@@ -17,11 +17,11 @@ import (
 )
 
 type buildCmd struct {
-	version     string
-	out         io.Writer
-	workdir     string
-	imageHelper ImageHelper
-	push        bool
+	version   string
+	out       io.Writer
+	workdir   string
+	imageUtil ImageUtil
+	push      bool
 }
 
 // BuildResponse contains the response from the docker client for "docker build"
@@ -30,7 +30,7 @@ type BuildResponse struct {
 }
 
 func newBuildCmd(out io.Writer, workdir string) *cobra.Command {
-	c := &buildCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
+	c := &buildCmd{out: out, workdir: workdir, imageUtil: NewDefaultImageUtil()}
 
 	cmd := &cobra.Command{
 		Use:              "build VERSION",
@@ -94,7 +94,7 @@ func (c *buildCmd) run() error {
 		// Build image
 		buildResponse, err := cli.ImageBuild(context.Background(), tarfile, types.ImageBuildOptions{
 			PullParent: true,
-			Tags:       c.imageHelper.getImageTags(config, tags),
+			Tags:       c.imageUtil.getImageTags(config, tags),
 			Context:    tarfile,
 			Dockerfile: dockerfile,
 		})

@@ -1,10 +1,7 @@
 image:
-- my.private.registry:5000/docker-common/nginx-base
+- ${DOCKER_REGISTRY}/docker-common/nginx-base
 versions:
-- directory: .
-  args:
-  dockerfile:
-  tags:
+- tags:
   - semver-nginx
   - semver
   - nginx

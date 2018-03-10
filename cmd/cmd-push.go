@@ -16,10 +16,10 @@ import (
 )
 
 type pushCmd struct {
-	version     string
-	out         io.Writer
-	workdir     string
-	imageHelper ImageHelper
+	version   string
+	out       io.Writer
+	workdir   string
+	imageUtil ImageUtil
 }
 
 // PushResponse contains the response from the docker client for "docker build"
@@ -29,7 +29,7 @@ type PushResponse struct {
 }
 
 func newPushCmd(out io.Writer, workdir string) *cobra.Command {
-	c := &pushCmd{out: out, workdir: workdir, imageHelper: NewDefaultImageHelper()}
+	c := &pushCmd{out: out, workdir: workdir, imageUtil: NewDefaultImageUtil()}
 
 	cmd := &cobra.Command{
 		Use:              "push VERSION",
@@ -70,7 +70,7 @@ func (c *pushCmd) run() error {
 
 		// Build image
 		logger.Debugf("response from docker daemon:")
-		for _, image := range c.imageHelper.getImageTags(config, tags) {
+		for _, image := range c.imageUtil.getImageTags(config, tags) {
 			fmt.Printf("push %s\n", image)
 			pushResponse, err := cli.ImagePush(context.Background(), image, types.ImagePushOptions{
 				RegistryAuth: "hydra",
