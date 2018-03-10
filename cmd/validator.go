@@ -2,9 +2,7 @@ package main
 
 import (
 	"errors"
-	"fmt"
 
-	"github.com/blang/semver"
 	"github.com/spf13/cobra"
 )
 
@@ -14,10 +12,10 @@ func SemverValidator() cobra.PositionalArgs {
 		if len(args) == 0 {
 			return errors.New("the version you want to push is required")
 		}
-		_, err := semver.Parse(args[0])
+		/*_, err := semver.Parse(args[0])
 		if err != nil {
 			return fmt.Errorf("invalid semantic version: %s", args[0])
-		}
+		}*/
 		return nil
 	}
 }

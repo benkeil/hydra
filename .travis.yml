@@ -9,25 +9,41 @@ env:
 - BUILD_GOOS=linux BUILD_GOARCH=386
 - BUILD_GOOS=linux BUILD_GOARCH=amd64
 
-before_script:
-- PROJECT_NAME=$(echo ${TRAVIS_REPO_SLUG} | cut -d "/" -f 2)
+before_install:
+- echo " >>> downloading dep"
 - go get -u github.com/golang/dep/cmd/dep
+
+install:
+- echo " >>> downloading dependencies"
+- dep ensure
+- dep status
+
+before_script:
+- echo " >>> preparing build informations"
+- PROJECT_NAME=$(echo ${TRAVIS_REPO_SLUG} | cut -d "/" -f 2)
 - |
   OUTPUT_NAME=${PROJECT_NAME}-${BUILD_GOOS}-${BUILD_GOARCH}
   if [ ${BUILD_GOOS} = "windows" ]; then
     OUTPUT_NAME+='.exe'
   fi
+- |
+  APP_VERSION=${TRAVIS_BRANCH}-$(git rev-parse --short ${TRAVIS_COMMIT})
+  if [ -n "${TRAVIS_TAG}" ]; then
+    APP_VERSION=${TRAVIS_TAG}
+  fi
+- echo " >>> build version ${APP_VERSION}"
 
 script:
-- dep ensure
-- dep status
-- echo "Building ${OUTPUT_NAME}"
+- echo " >>> Building ${OUTPUT_NAME}"
 - go test -race -covermode=atomic ./...
-- env GOOS=${BUILD_GOOS} GOARCH=${BUILD_GOARCH} go build -o ${OUTPUT_NAME} cmd/*.go
+- env CGO_ENABLED=0 GOOS=${BUILD_GOOS} GOARCH=${BUILD_GOARCH} go build -a -installsuffix cgo -x -ldflags "-X main.version=${APP_VERSION}" -o ${OUTPUT_NAME} cmd/*.go
 - tar -cvzf ${OUTPUT_NAME}.tar.gz ${OUTPUT_NAME}
 
 after_success:
+- echo " >>> upload codecoverage"
 - bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
+- echo " >>> test hydra"
+- ./${OUTPUT_NAME} --version
 
 before_deploy:
 - shasum -a 256 ${OUTPUT_NAME}.tar.gz

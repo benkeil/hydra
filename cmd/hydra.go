@@ -12,6 +12,8 @@ import (
 // http://how-bazaar.blogspot.de/2013/10/loggo-hierarchical-loggers-for-go.html
 var logger = loggo.GetLogger("hydra")
 
+var version string
+
 func init() {
 	loggo.ConfigureLoggers("<root>=INFO; hydra=ERROR")
 }
@@ -45,7 +47,7 @@ func newRootCmd(args []string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:          "hydra",
 		Short:        "Hydra builds docker images and add multiple convenient tags",
-		Version:      "0.0.1",
+		Version:      version,
 		SilenceUsage: true,
 	}
 
