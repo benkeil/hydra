@@ -2,27 +2,34 @@
 
 
 [[projects]]
+  digest = "1:6331095c1906771fbe129fe4a1f94ac5b5a97b0f60f2f80653bb95c3e5dad81e"
   name = "github.com/Microsoft/go-winio"
   packages = ["."]
+  pruneopts = ""
   revision = "7da180ee92d8bd8bb8c37fc560e673e6557c392f"
   version = "v0.4.7"
 
 [[projects]]
+  digest = "1:79421244ba5848aae4b0a5c41e633a04e4894cb0b164a219dc8c15ec7facb7f1"
   name = "github.com/blang/semver"
   packages = ["."]
+  pruneopts = ""
   revision = "2ee87856327ba09384cabd113bc6b5d174e9ec0f"
   version = "v3.5.1"
 
 [[projects]]
+  digest = "1:a9e4ff75555e4500e409dc87c1d708b090bb8dd77f889bbf266773f3dc23af70"
   name = "github.com/docker/distribution"
   packages = [
     "digest",
-    "reference"
+    "reference",
   ]
+  pruneopts = ""
   revision = "48294d928ced5dd9b378f7fd7c6f5da3ff3f2c89"
   version = "v2.6.2"
 
 [[projects]]
+  digest = "1:a60acfb78bd12ce7b2101f0cc0bca8cd83db6aa60bf1e6ddfd33e83013083ddf"
   name = "github.com/docker/docker"
   packages = [
     "api/types",
@@ -40,88 +47,119 @@
     "api/types/versions",
     "api/types/volume",
     "client",
-    "pkg/tlsconfig"
+    "pkg/tlsconfig",
   ]
+  pruneopts = ""
   revision = "092cba3727bb9b4a2f0e922cd6c0f93ea270e363"
   version = "v1.13.1"
 
 [[projects]]
+  digest = "1:a5ecc2e70260a87aa263811281465a5effcfae8a54bac319cee87c4625f04d63"
   name = "github.com/docker/go-connections"
   packages = [
     "nat",
     "sockets",
-    "tlsconfig"
+    "tlsconfig",
   ]
+  pruneopts = ""
   revision = "3ede32e2033de7505e6500d6c868c2b9ed9f169d"
   version = "v0.3.0"
 
 [[projects]]
+  digest = "1:a406cae5eda48c01f8171bd47beb038751393f25ac06774ce04f9d6b0b703f17"
   name = "github.com/docker/go-units"
   packages = ["."]
+  pruneopts = ""
   revision = "0dadbb0345b35ec7ef35e228dabb8de89a65bf52"
   version = "v0.3.2"
 
 [[projects]]
+  digest = "1:a1bad350477afbc84e8cbe5c78be4579478c55335377239631ff0adb985fbabc"
   name = "github.com/golang/mock"
   packages = ["gomock"]
+  pruneopts = ""
   revision = "13f360950a79f5864a972c786a10a50e44b69541"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
+  pruneopts = ""
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:3be464a55a419d4c22383388f1204a9597c6cdc41d67ca4bc08848e688585279"
   name = "github.com/juju/loggo"
   packages = ["."]
+  pruneopts = ""
   revision = "8232ab8918d91c72af1a9fb94d3edbe31d88b790"
 
 [[projects]]
+  digest = "1:7365acd48986e205ccb8652cc746f09c8b7876030d53710ea6ef7d0bd0dcd7ca"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = ""
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:829f43c3a4933cf099a185a2c67e0b825a2ce028e3830e4add014ff738d44a91"
   name = "github.com/spf13/cobra"
   packages = ["."]
+  pruneopts = ""
   revision = "c6c44e6fdcc30161c7f4480754da7230d01c06e3"
 
 [[projects]]
+  digest = "1:261bc565833ef4f02121450d74eb88d5ae4bd74bfe5d0e862cddb8550ec35000"
   name = "github.com/spf13/pflag"
   packages = ["."]
+  pruneopts = ""
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:d6ff496a166a2371bfc9b653632c1a94de1b8cf3bed6ee0f2dd38ba75c8efe2c"
   name = "golang.org/x/net"
   packages = [
     "context",
     "context/ctxhttp",
-    "proxy"
+    "proxy",
   ]
+  pruneopts = ""
   revision = "d0aafc73d5cdc42264b0af071c261abac580695e"
 
 [[projects]]
   branch = "master"
+  digest = "1:585e82324176ec9436e6f982fb6f30d68a8ebb8fd55a942eb247942a4ed490dd"
   name = "golang.org/x/sys"
   packages = ["windows"]
+  pruneopts = ""
   revision = "7dca6fe1f43775aa6d1334576870ff63f978f539"
 
 [[projects]]
+  branch = "v2"
+  digest = "1:cedccf16b71e86db87a24f8d4c70b0a855872eb967cb906a66b95de56aefbd0d"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
-  version = "v2.1.1"
+  pruneopts = ""
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "642eb26a2e71cb04dd68aea23e0bc9079d39dfc8937defd97edccc0d73cb2f3b"
+  input-imports = [
+    "github.com/blang/semver",
+    "github.com/docker/docker/api/types",
+    "github.com/docker/docker/client",
+    "github.com/golang/mock/gomock",
+    "github.com/juju/loggo",
+    "github.com/spf13/cobra",
+    "gopkg.in/yaml.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	dockerconfig "github.com/docker/cli/cli/config"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/spf13/cobra"
@@ -26,6 +27,7 @@ type pushCmd struct {
 type PushResponse struct {
 	Status string
 	ID     string
+	Error  string
 }
 
 func newPushCmd(out io.Writer, workdir string) *cobra.Command {
@@ -60,6 +62,27 @@ func (c *pushCmd) run() error {
 	cli, err := client.NewEnvClient()
 	check(err)
 
+	// Check for Docker auth config
+	dockerConfigFile, dockerErr := dockerconfig.Load("")
+	check(dockerErr)
+
+	logger.Debugf("Docker Config file: %v\n", dockerConfigFile)
+
+	// TODO: fix the behavior with multiple YAML objects/images in config file
+	registryHostname := c.imageUtil.getRegistryHostnames(config)[0]
+
+	logger.Debugf("Registry Hostname: %v\n", registryHostname)
+
+	registryAuth, dockerErr := dockerConfigFile.GetAuthConfig(registryHostname)
+	check(dockerErr)
+
+	registryAuthString := c.imageUtil.encodeAuth(&registryAuth)
+
+	if registryAuthString == "" {
+		registryAuthString = "hydra"
+	}
+	logger.Debugf("Registry Auth String: %v\n", registryAuthString)
+
 	// Build each version from the config
 	for _, v := range config.Versions {
 		var directory = path.Join(c.workdir, v.Directory) + string(filepath.Separator)
@@ -73,23 +96,34 @@ func (c *pushCmd) run() error {
 		for _, image := range c.imageUtil.getImageTags(config, tags) {
 			fmt.Printf("push %s\n", image)
 			pushResponse, err := cli.ImagePush(context.Background(), image, types.ImagePushOptions{
-				RegistryAuth: "hydra",
-			})
+				RegistryAuth: registryAuthString})
+			defer pushResponse.Close()
 			if err != nil {
 				fmt.Printf("Can not push image %s\n%s\n", image, err.Error())
 			} else {
-				defer pushResponse.Close()
 				response, err := ioutil.ReadAll(pushResponse)
 				check(err)
-				// Print response from docker daemon
-				logger.Debugf("response from docker daemon:")
+
 				for _, line := range strings.Split(string(response), "\n") {
-					output := PushResponse{}
-					json.Unmarshal([]byte(line), &output)
-					if output.Status != "" && output.ID != "" {
-						fmt.Printf("%s: %s\n", output.ID, output.Status)
-					} else if output.Status != "" {
-						fmt.Printf("%s\n", output.Status)
+					logger.Debugf("response line: %v\n", line)
+					if line != "" {
+						// parse response line by line
+						output := PushResponse{}
+						err := json.Unmarshal([]byte(line), &output)
+						check(err)
+
+						// check the response for success/error
+						// we have status for layer id
+						if output.Status != "" && output.ID != "" {
+							// we have status and id
+							fmt.Printf("%s: %s\n", output.ID, output.Status)
+						} else if output.Status != "" {
+							// we have only status
+							fmt.Printf("%s\n", output.Status)
+						} else if output.Error != "" {
+							// we have an error
+							fmt.Printf("Error: %s\n", output.Error)
+						}
 					}
 				}
 			}
